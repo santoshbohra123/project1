@@ -26,6 +26,7 @@ async function main() {
 
 }
 
+// Index Route
 
 app.get("/listings", async (req, res) => {
     const allListings = await Listing.find({});
@@ -33,6 +34,13 @@ app.get("/listings", async (req, res) => {
 });
 
 
+
+// Show route 
+app.get("/listings/:id",async (req,res)=>{
+    const {id} = req.params;
+    const listing = await Listing.findById(id);
+    res.render("listings/show",{listing});
+})
 
 // app.get("/pricelisting", async (req, res) => {
 //     console.log("📌 /pricelisting route hit");
