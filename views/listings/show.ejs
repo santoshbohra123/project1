@@ -17,7 +17,7 @@
             <%=listing.description%>
         </li>
         <li>
-            <%=listing.price%>
+            &#8377; <%=listing.price.toLocaleString("en-IN")%>
         </li>
         <li>
             <%=listing.location%>
@@ -26,6 +26,14 @@
             <%=listing.country%>
         </li>
     </ul>
+
+    <br>
+    <a href="/listings/<%=listing._id%>/edit">edit this listing </a>
+
+    <br> <br>
+    <form method="post" action="/listings/<%=listing._id%>?_method=DELETE">
+        <button>Delete this route</button>
+    </form>
 </body>
 
 </html>
