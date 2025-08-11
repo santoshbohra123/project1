@@ -1,42 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout("/layouts/boilerplate") %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanderlustt</title>
-</head>
+    <body>
 
-<body>
-    <h3>Edit your listing</h3>
-    <form action="/listings/<%=listing._id%>?_method=PUT" method="post">
+        <div class="row offset-2 mt-3">
 
-        <input name="listing[title]" value="<%=listing.title%>" type="text">
+            <div class="col-8">
+                <h3>Edit your listing</h3>
+<br>
+                <form action="/listings/<%=listing._id%>?_method=PUT" method="post"  class="needs-validation" novalidate>
 
-        <br> <br>
+                    <div class="mb-3">
 
-        <textarea name="listing[description]"><%=listing.description%></textarea>
+                        <label for="title" class="form-label">Title</label>
 
-        <br> <br>
+                        <input name="listing[title]" required class="form-control" value="<%=listing.title%>" type="text">
+                         <div class="valid-feedback">Title looks good</div>
+                         <div class="invalid-feedback">Give a title</div>
+                    </div>
 
-        <input name="listing[price]" value="<%=listing.price%>" type="number">
 
-        <br> <br>
+                    <div class="mb-3">
 
-        <input name="listing[image]" value="<%=listing.image.url%>" type="text">
 
-        <br> <br>
+                        <label for="description" class="form-label">Description</label>
 
-        <input name="listing[location]" value="<%=listing.location%>" type="text">
+                        <textarea name="listing[description]" required class="form-control"><%=listing.description%></textarea>
+                         <div class="valid-feedback">Description looks good</div>
+                         <div class="invalid-feedback">Give a Description</div>
 
-        <br> <br>
 
-        <input name="listing[country]" value="<%=listing.country%>" type="text">
+                    </div>
 
-        <br> <br>
+                    <div class="row">
 
-        <button>edit </button>
-    </form>
-</body>
 
-</html>
+                        <div class="mb-3 col-md-4">
+                            <label for="price" class="form-label">Price</label>
+
+                            <input  required name="listing[price]" class="form-control" value="<%=listing.price%>" type="number">
+                             <div class="valid-feedback">Price looks good</div>
+                         <div class="invalid-feedback">Give a Price</div>
+
+                        </div>
+
+                        <div class="mb-3 col-md-8">
+
+                            <label for="country" class="form-label">Country</label>
+                            <input name="listing[country]"  required class="form-control" value="<%=listing.country%>"
+                                type="text">
+                                 <div class="valid-feedback">valid country</div>
+                         <div class="invalid-feedback">Give a country</div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label for="image" class="form-label">Image</label>
+                        <input name="listing[image]"  required class="form-control" value="<%=listing.image.url%>" type="text">
+                         <div class="valid-feedback">Correct Url </div>
+                         <div class="invalid-feedback">Give an Url</div>
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label for="location" class="form-label">Location</label>
+                        <input name="listing[location]"  required class="form-control" value="<%=listing.location%>" type="text">
+                         <div class="valid-feedback">Valid Location</div>
+                         <div class="invalid-feedback">invalid Location</div>
+                    </div>
+
+
+
+                    <button class="btn btn-dark mb-3 mt-3 edit-btn">edit </button>
+                </form>
+                <br>
+
+            </div>
+
+        </div>
+
+    </body>

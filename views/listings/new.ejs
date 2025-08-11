@@ -1,27 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanderlustt</title>
-</head>
-<body>
-    <h3>Create new listing</h3>
-    <form method="POST" action="/listings">
+<% layout("/layouts/boilerplate") %>
 
-        <input name="listing[title]" type="text" placeholder="enter title">
-        <br> <br>
-        <textarea name="listing[description]" id="" placeholder="enter Description"></textarea>
-        <br> <br>
-        <input name="listing[price]" type="number" placeholder="enter price">
-        <br> <br>
-        <input name="listing[image]" type="text" placeholder="enter image URL/Link">
-        <br> <br>
-        <input name="listing[location]" type="text" placeholder="enter location">
-        <br> <br>
-        <input name="listing[country]" type="text" placeholder="enter country">
-        <br> <br>
-    <button>add</button>
-    </form>
-</body>
-</html>
+ 
+            <body>
+                   <div class="row container">
+        <div class="col col-8 offset-2">
+
+                <br>
+                <h3>Create new listing</h3>
+                <br>
+                <form method="POST" action="/listings" class="needs-validation" novalidate>
+
+                    <div class="mb-3">
+
+                        <label for="title" class="form-label">Title</label>
+                        <input name="listing[title]" class="form-control" placeholder="Add a catchy title" required type="text">
+                        <div class="valid-feedback">Title looks good</div>
+                         <div class="invalid-feedback">Give a title</div>
+                    </div>
+                    <div class="mb-3">
+
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="listing[description]" class="form-control" required></textarea>
+                        <div class="valid-feedback">Description looks good</div>
+                         <div class="invalid-feedback">Needs a Discription</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image URL</label>
+                        <input name="listing[image]" class="form-control" type="text"
+                            placeholder="Enter image URL/Link">
+                        
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="mb-3 col-md-4">
+
+                            <label for="price" class="form-label">Price</label>
+                            <input name="listing[price]" placeholder="3200"  required  class="form-control" type="number">
+                            <div class="valid-feedback">Price looks good</div>
+                            <div class="invalid-feedback">Please Enter price</div>
+                        </div>
+
+                        <div class="mb-3 col-md-8">
+
+                            <label for="country" class="form-label">Enter Country</label>
+                            <input name="listing[country]"  required  class="form-control" placeholder="India" type="text">
+                            <div class="valid-feedback">Right Country Name</div>
+                            <div class="invalid-location">Enter Country name</div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label for="location" class="form-label">Enter Location</label>
+                        <input name="listing[location]"  required  class="form-control" type="text" placeholder=" Jaipur, Rajsthan,Mumbai">
+                        <div class="invalid-feedback">Enter Right Location</div>
+                    </div>
+ <br> 
+
+                    <button class="btn btn-dark add-btn">add</button>
+              
+                </form>
+                
+                 <br> <br>
+            </body>
+
+        </div>
+    </div>
