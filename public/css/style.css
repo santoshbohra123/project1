@@ -1,15 +1,25 @@
+       html,
        body {
+           overflow-x: hidden;  
+/* page left ya right m move nhi krta h */
+
+       }
+
+       body {
+
            font-family: "Plus Jakarta Sans", sans-serif;
            font-optical-sizing: auto;
            font-weight: weight;
-           font-style: normal ;
-           display: flex;               /*  */
+           font-style: normal;
+           display: flex;
+           /*  */
            flex-direction: column !important;
-           min-height: 100vh !important;  /*for cover all area of website */
+           min-height: 100vh !important;
+           /*for cover all area of website */
        }
 
-       .container{
-        flex: 1;
+       .container {
+           flex: 1;
        }
 
        /* navbar */
@@ -57,7 +67,7 @@
            justify-content: center;
            text-align: center;
            align-items: center;
-  
+
        }
 
        .f-info {
@@ -67,13 +77,13 @@
            background-color: #ebebeb;
            justify-content: center;
            text-align: center;
-          
+
 
        }
 
 
        /* cards */
-       .card {
+       .listing-card {
            border: none !important;
            margin-bottom: 2rem;
        }
@@ -91,7 +101,7 @@
 
        .card-text {
            font-weight: 400 !important;
-          
+
        }
 
        .card-link {
@@ -111,25 +121,25 @@
 
        /*form new btn  */
 
-       .add-btn{
-        background-color: #fe424d;
-        border:none;
+       .add-btn {
+           background-color: #fe424d;
+           border: none;
        }
 
 
        /* edit btn */
-       .edit-btn{
-        background-color: #fe424d;
-        border:none;
+       .edit-btn {
+           background-color: #fe424d;
+           border: none;
 
        }
 
        /* show img */
-      .show-img{
-     height: fit-content;
-     height: 45vh;
-      }
+       .show-img {
+           height: 30vh;
+           height: 100
+       }
 
-      .btns{
-        display: flex;
-      }
+       .btns {
+           display: flex;
+       }
