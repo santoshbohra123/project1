@@ -30,9 +30,10 @@ router.post("/",
     listing.reviews.push(newReview);
     await newReview.save();
     await listing.save();
+    req.flash("success","Review added successfully")
     res.redirect(`/listings/${listing._id}`)
-
-
+    
+    
 }));
 
 // Delete review route
@@ -40,8 +41,9 @@ router.post("/",
 router.delete("/:reviewId",async (req,res)=>{
     let {id,reviewId} = req.params;
     await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}})  //delete reviewId from listing. from review array in listing. so use$pull method
-
+    
     await Reviews.findByIdAndDelete(reviewId);
+    req.flash("success","Review deleted successfully")
     res.redirect(`/listings/${id}`)
 })
 
