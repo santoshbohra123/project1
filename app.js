@@ -5,11 +5,16 @@ const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require("./utils/Expresserror.js");
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js")
+const listingRoute = require("./routes/listing.js");
+const reviewRoute = require("./routes/review.js")
+const userRoute = require("./routes/user.js")
 const session = require('express-session');
 const { date } = require('joi');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require("./models/user.js");
+
 
 const sessionOptions = {
     secret:"mysuperSecreCode",
@@ -25,6 +30,18 @@ const sessionOptions = {
 app.use(session(sessionOptions));
 app.use(flash());
 
+// Authentication
+app.use(passport.initialize());
+app.use(passport.session());
+
+// use static Authenticate method of model in LocalStrategy.
+passport.use(new LocalStrategy(User.authenticate()));
+
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
@@ -32,17 +49,32 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate)
 app.use(express.static(path.join(__dirname, "/public")))
 
+
 // middleware for flash
 app.use((req,res,next)=>{
 res.locals.success = req.flash("success");
 res.locals.error = req.flash("error");
+res.locals.currUser = req.user;
 // console.log(res.locals.success);
 next();
 })
 
+
+// demo user registered in database
+// app.get("/demoUser",async (req,res)=>{
+//     const demoUser = {
+//         email:"santosh@gmail.com",
+//         username:"@Santosh02"
+//     }
+//     let newUser = await User.register(demoUser,"@password");
+//     res.send(newUser);
+
+// })
+
 //now mount routes
-app.use("/listings",listings);
-app.use("/listings/:id/reviews",reviews)
+app.use("/listings",listingRoute);
+app.use("/listings/:id/reviews",reviewRoute)
+app.use("/",userRoute)
 
 const port = 8080;
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
@@ -59,22 +91,6 @@ async function main() {
     await mongoose.connect(MONGO_URL);
 
 }
-
-// app.get("/pricelisting", async (req, res) => {
-//     console.log("📌 /pricelisting route hit");
-//     const sampleListing = new Listing({
-//         title: "My new Villa",
-//         description: "It is situated in Seoul, by the beach.",
-//         price: 20000,
-//         location: "Seoul",
-//         country: "South Korea",
-//     });
-
-//     await sampleListing.save();
-//     console.log("✅ Saved details successfully.");
-//     res.send("success");
-// });
-
 
 
 app.get("/", (req, res) => {
