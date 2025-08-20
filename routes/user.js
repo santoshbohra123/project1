@@ -10,7 +10,8 @@ router.get("/signup", (req, res) => {
     res.render("users/signup.ejs");
 })
 
-router.post("/signup"
+router.post("/signup",
+    saveRedirectUrl
     ,saveRedirectUrl, async (req, res,next) => {
         try {
             const { username, email, password } = req.body;
@@ -26,9 +27,10 @@ router.post("/signup"
                 } req.flash('success', "welcome to Wonderlust");
                 // console.log(req.user);
                 
-                res.redirect("/listings");
+              let redirectUrl = res.locals.redirectUrl || "/listings";
+        res.redirect(redirectUrl);
             })
-            console.log(registeredUser);
+            // console.log(registeredUser);
 
         } catch (err) {
             req.flash("error", err.message);

@@ -54,8 +54,9 @@ app.use(express.static(path.join(__dirname, "/public")))
 app.use((req,res,next)=>{
 res.locals.success = req.flash("success");
 res.locals.error = req.flash("error");
-res.locals.currUser = req.user;
+res.locals.currUser = req.user;     // save current user details in session
 // console.log(res.locals.success);
+console.log(req.user);
 next();
 })
 
