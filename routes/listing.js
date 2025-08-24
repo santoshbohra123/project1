@@ -4,110 +4,59 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const { validateListing } = require('../middleware.js');
 const Listing = require("../models/listing.js");
 const { isLoggedIn } = require('../middleware.js');
-const {isOwner} = require('../middleware.js');
+const { isOwner } = require('../middleware.js');
+const listingController = require('../controlers/listing.js');
+
+const multer = require('multer'); // use for form data parse. 
+const {storage} = require('../cloudConfig.js');
+const upload = multer({ storage });     // it finds files from form and save in uploads 
 
 
-// Index Route
+router.route("/")
 
-router.get("/",
-    wrapAsync(async (req, res) => {
-        const allListings = await Listing.find({});
-        res.render("listings/index", { allListings });
-    }));
+    // Index Route
+    .get(
+        wrapAsync(listingController.index))
+
+
+    // create listing
+    .post(isLoggedIn,
+        
+         upload.single('listing[image]'),   // parses multipart form,
+        wrapAsync(listingController.createListing))
 
 
 //new Route
-
-router.get("/new", isLoggedIn, (req, res) => {
-
-    res.render("listings/new.ejs");
-});
+router.get("/new", isLoggedIn, listingController.rendernewForm);
 
 
 
-router.post("/",
-    validateListing,
-    wrapAsync(async (req, res, next) => {
+router.route("/:id")
 
-        req.flash("success", "New listing created successfully")
-        let newListing = new Listing(req.body.listing);
-        // console.log(req.user);
-        newListing.owner = req.user._id;
-        await newListing.save();
-        res.redirect("/listings");
-    }))
+    //Delete Route
+    .delete(
+        isLoggedIn,
+        isOwner,
+        wrapAsync(listingController.destroyListing))
 
-// Show route 
-router.get("/:id",
+    // Show route     
+    .get(
+        wrapAsync(listingController.showListing))
 
-    wrapAsync(async (req, res) => {
-        const { id } = req.params;
-        const listing = await Listing.findById(id)
-        .populate({
-            path:"reviews",
-            populate : {
-                path:"author",
-            },
-        })
-        .populate("owner");
-        // console.log(listing.owner._id);
-        // console.log(listing)
-        if (!listing) {
-            req.flash("error", "Listing you requested for does not exist!")
-            return res.redirect("/listings")
-
-        }
-          res.render("listings/show", { listing });
-    }));
+    // update route
+    .put(
+        isLoggedIn,
+        isOwner,
+        upload.single('listing[image]'),
+        wrapAsync(listingController.updateListing));
 
 
 //edit route
-
 router.get("/:id/edit",
     isLoggedIn,
- isOwner, 
+    isOwner,
     validateListing,
-    wrapAsync(async (req, res) => {
-        const { id } = req.params;
-        const listing = await Listing.findById(id);
-        if (!listing) {
-            req.flash("error", "Listing you requested for does not exist!")
-            return res.redirect("/listings")
+    wrapAsync(listingController.editListing));
 
-        }
-        res.render("listings/edit", { listing });
-    }));
-
-
-// update route
-
-router.put("/:id",
-    isLoggedIn,
-    isOwner,
-    wrapAsync(async (req, res) => {
-        if (!req.body.listing) {
-            throw new ExpressError(400, "send valid data for listing.")
-        }
-        const { id } = req.params;
-        await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { runValidators: true });
-        // is using JavaScript’s spread syntax (...) to take all the properties from req.body.listing and copy them into a new object.
-        req.flash("success", "Listing updated successfully.")
-
-        res.redirect(`/listings/${id}`);
-    }));
-
-
-//Delete Route
-
-router.delete("/:id",
-    isLoggedIn,
-    isOwner,
-     wrapAsync(async (req, res) => {
-        const { id } = req.params;
-        const deletedListing = await Listing.findByIdAndDelete(id);
-        // console.log(deletedListing);
-        req.flash("success", " Listing deleted successfully.")
-        res.redirect("/listings");
-    }));
 
 module.exports = router;

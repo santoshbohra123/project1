@@ -1,3 +1,13 @@
+if (process.env.NODE_ENV != "production") {
+  require('dotenv').config();
+}
+// console.log('Cloudinary Config:', {
+//   cloud_name: process.env.CLOUD_NAME,
+//   api_key: process.env.CLOUD_API_KEY,
+//   api_secret: process.env.CLOUD_API_SECRET
+// });
+// console.log(process.env.SECRET);
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -14,16 +24,18 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require("./models/user.js");
+app.use(express.urlencoded({ extended: true }));
+
 
 
 const sessionOptions = {
-    secret:"mysuperSecreCode",
-    resave :false,
-    saveUninitialized :true,
-    cookie:{
-        expires:Date.now() + 7*24*60*60*1000,
-        maxAge : 7*24*60*60*1000,
-        httpOnly : true
+    secret: "mysuperSecreCode",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true
     }
 }
 
@@ -51,13 +63,13 @@ app.use(express.static(path.join(__dirname, "/public")))
 
 
 // middleware for flash
-app.use((req,res,next)=>{
-res.locals.success = req.flash("success");
-res.locals.error = req.flash("error");
-res.locals.currUser = req.user;     // save current user details in session
-// console.log(res.locals.success);
-console.log(req.user);
-next();
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    res.locals.currUser = req.user;     // save current user details in session
+    // console.log(res.locals.success);
+    // console.log(req.user);
+    next();
 })
 
 
@@ -73,9 +85,9 @@ next();
 // })
 
 //now mount routes
-app.use("/listings",listingRoute);
-app.use("/listings/:id/reviews",reviewRoute)
-app.use("/",userRoute)
+app.use("/listings", listingRoute);
+app.use("/listings/:id/reviews", reviewRoute)
+app.use("/", userRoute)
 
 const port = 8080;
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";

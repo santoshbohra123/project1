@@ -12,18 +12,12 @@ const listingSchema = new Schema({
   description: String,
 
   image: {
-    filename: {
-      type: String,
-      default: 'listingimage',
-    },
-    url: {
-      type: String,
-      default: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQvHTRJu5Kdgnc6K0E5R9x0lLlVLvE36LPyQ&s',
-      set: (v) =>
-        v === ' '
-          ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQvHTRJu5Kdgnc6K0E5R9x0lLlVLvE36LPyQ&s'
-          : v,
-    },
+   url:{
+    type:String
+   }
+  },
+  filename:{
+    type:String
   },
 
   price: Number,
