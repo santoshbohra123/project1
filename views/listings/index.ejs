@@ -1,39 +1,108 @@
+
 <% layout("/layouts/boilerplate") %>
+<body>
+    
 
-    <body>
-        <h3>All Listings</h3>
 
-        <!-- <form method ="get" action="/listings/new">
+    <!-- <h3>All Listings</h3> -->
+
+    <!-- <form method ="get" action="/listings/new">
         <button>create new listing</button>
     </form> -->
-        <ul>
-            <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1">
-                <% for(let listing of allListings){ %>
-                    <a href="/listings/<%=listing._id%>" class="card-link">
 
+    <div class="filters">
 
-                        <div class="card listing-card index-card col">
-                            <img src="<%= listing.image.url%>" 
-                             class="card-img-top"
-                             alt="listing-image"
-                            style="height: 20rem;">
-
-                            <div class="card-img-overlay"></div>
-
-                            <div class="card-body">
-                                <p class="card-text">
-                                    <b>
-                                        <%= listing.title %>
-                                    </b>
-                                    <br>
-                                    &#8377; <%=listing.price.toLocaleString("en-IN")%>/night
-
-                                </p>
-                            </div>
-                        </div>
-                    </a>
-                    <% } %>
+        <div class="filter">
+            <div>
+                <i class="fa-solid fa-fire"></i>
+                <p> Trending</p>
+            </div>
+            <div>
+                <i class="fa-solid fa-bed"></i>
+                <p> Rooms</p>
             </div>
 
-        </ul>
-    </body>
+             <div>
+           <i class="fa-solid fa-mountain-city"></i>
+                <p> Iconic Cities</p>
+            </div>
+
+             <div>
+           <i class="fa-solid fa-mountain-sun"></i>
+                <p>Mountains</p>
+            </div>
+
+             <div>
+                <i class="fa-brands fa-fort-awesome"></i>
+                <p> Castles</p>
+            </div>
+             <div>
+               <i class="fa-solid fa-person-swimming"></i>
+                <p> Amazing Pools</p>
+            </div>
+             <div>
+                <i class="fa-solid fa-campground"></i>
+                <p> Camping</p>
+            </div>
+             <div>
+                <i class="fa-solid fa-cow"></i>
+                <p> Farms</p>
+            </div>
+             <div>
+                <i class="fa-brands fa-galactic-republic"></i>
+                <p> Arctic</p>
+            </div>
+        </div>
+        <div class="tax-toggle">
+            <div class="form-check-reverse form-switch">
+                <input type="checkbox"
+                class="form-check-input"
+                role="switch"
+                id="flexSwitchCheckDefault"/>
+                <label class="form-check-label" for="flexSwitchCheckDefault">Display Total After Taxes</label>
+            </div>
+        </div>
+    </div>
+
+    <ul>
+        <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 mt-3">
+            <% for(let listing of allListings){ %>
+                <a href="/listings/<%=listing._id%>" class="card-link">
+
+
+                    <div class="card listing-card index-card col">
+                        <img src="<%= listing.image.url%>" class="card-img-top" alt="listing-image"
+                            style="height: 20rem;">
+
+                        <div class="card-img-overlay"></div>
+
+                        <div class="card-body">
+                            <p class="card-text">
+                                <b>
+                                    <%= listing.title %>
+                                </b>
+                                <br>
+                                &#8377; <%=listing.price.toLocaleString("en-IN")%>/night
+
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                <% } %>
+        </div>
+
+    </ul>
+   <script>
+    let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+    taxSwitch.addEventListener("click", () => {
+        console.log("clicked");
+    });
+
+    // 🔹 Mobile filter toggle
+    const toggleBtn = document.getElementById("toggleFilters");
+    const filters = document.querySelector(".filters");
+    toggleBtn.addEventListener("click", () => {
+        filters.classList.toggle("show-filters");
+    });
+</script>
+</body>

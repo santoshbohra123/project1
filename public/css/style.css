@@ -1,7 +1,7 @@
        html,
        body {
-           overflow-x: hidden;  
-/* page left ya right m move nhi krta h */
+           overflow-x: hidden;
+           /* page left ya right m move nhi krta h */
 
        }
 
@@ -15,8 +15,8 @@
            /*  */
            flex-direction: column !important;
            min-height: 100vh !important;
-           /*for cover all area of website */
-       }
+    padding-top: 5rem; /* A little more spacing for safety */
+}
 
        .container {
            flex: 1;
@@ -27,6 +27,10 @@
        .navbar {
            height: 5rem;
            background-color: white;
+           position: fixed;
+           /* Keeps it fixed at top */
+           width: 100%;
+
        }
 
        .fa-compass {
@@ -143,3 +147,42 @@
        .btns {
            display: flex;
        }
+
+       #map {
+           height: 400px;
+           width: 100%;
+       }
+
+       /* for icons */
+       
+
+    .filters {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+        
+    }
+    
+    .filter {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 2rem;
+        margin-top: 1rem;
+    }
+
+    .filter div {
+        opacity: 0.7;
+        text-align: center;
+    }
+
+    .filter div:hover {
+        opacity: 1;
+        cursor: pointer;
+    }
+
+    .filter div p {
+        font-size: 0.8rem;
+    }
