@@ -1,12 +1,7 @@
+const dbUrl = "mongodb+srv://santosh-bohra:EghzjuLyPoh9URcH@cluster0.h7vqkjr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 if (process.env.NODE_ENV != "production") {
-  require('dotenv').config();
+    require('dotenv').config();
 }
-// console.log('Cloudinary Config:', {
-//   cloud_name: process.env.CLOUD_NAME,
-//   api_key: process.env.CLOUD_API_KEY,
-//   api_secret: process.env.CLOUD_API_SECRET
-// });
-// console.log(process.env.SECRET);
 
 const express = require('express');
 const app = express();
@@ -19,6 +14,7 @@ const listingRoute = require("./routes/listing.js");
 const reviewRoute = require("./routes/review.js")
 const userRoute = require("./routes/user.js")
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const { date } = require('joi');
 const flash = require('connect-flash');
 const passport = require('passport');
@@ -27,9 +23,21 @@ const User = require("./models/user.js");
 app.use(express.urlencoded({ extended: true }));
 
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    crypto: {
+        secret: process.env.SECRET
+    },
+    touchAfter: 1 * 60 * 60,
+});
+
+store.on("error",()=>{
+    console.log("ERROR IN MONGO SESSION STORE",err);
+});
 
 const sessionOptions = {
-    secret: "mysuperSecreCode",
+    store: store,
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -81,16 +89,14 @@ app.use((req, res, next) => {
 //     }
 //     let newUser = await User.register(demoUser,"@password");
 //     res.send(newUser);
-
 // })
-
 //now mount routes
+
 app.use("/listings", listingRoute);
 app.use("/listings/:id/reviews", reviewRoute)
 app.use("/", userRoute)
 
 const port = 8080;
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 main()
     .then(() => {
         console.log("connected to DB");
@@ -101,14 +107,9 @@ main()
 
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbUrl);
 
 }
-
-
-// app.get("/", (req, res) => {
-//     res.send("hii I'm root.")
-// })
 
 app.all(/.*/, (req, res, next) => {
     next(new ExpressError(404, "Page not found!"));
